@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ namespace StudLab.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly StudentContext _context;
+        private readonly StudentDbContext _context;
 
-        public StudentsController(StudentContext context)
+        public StudentsController(StudentDbContext context)
         {
             _context = context;
         }
@@ -112,6 +113,7 @@ namespace StudLab.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Policy = "Bearer")]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
           if (_context.Student == null)
